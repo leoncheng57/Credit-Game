@@ -4,10 +4,16 @@ int blockSize = 200;
 Block[][] grid = new Block[3][4];
 Avatar player = new Avatar(2, 4);
 ArrayList<Avatar> zombies = new ArrayList<Avatar>();
+PImage imgCollision;
+PImage imgStore;
+int timer = 999;
+boolean showStore;
 
 void setup() {
   size(3*blockSize, 4*blockSize);
   background(0);
+  imgCollision = loadImage("Collision.png");
+  imgStore = loadImage("Store.png");
 }
 
 void makeGrid() {
@@ -21,11 +27,12 @@ void makeGrid() {
 }
 
 void spawnZombie() {
-  int rnd = (int)random(0, 50);
+  int rnd = (int)random(0, 100);
   int rx = (int)random(1, 4);
   int ry = 1;
   if (rnd==0) {
-    Avatar z = new Avatar(rx, ry);
+    color c = #E30733;
+    Avatar z = new Avatar(rx, ry, c);
     zombies.add(z);
   }
 }
@@ -41,7 +48,8 @@ boolean isColliding(Avatar p, Avatar z) {
   float py = p.yCor;
   float zx = z.xCor;
   float zy = z.yCor;
-  if (abs(px-zx)<0.25 && abs(py-zy)<0.25) {
+  float collisionDistance = 0.1;
+  if (abs(px-zx)<collisionDistance && abs(py-zy)<collisionDistance) {
     return true;
   }
   return false;
@@ -49,19 +57,28 @@ boolean isColliding(Avatar p, Avatar z) {
 
 void draw() {
   makeGrid();
-  //zombies
+  /* Zombies */
   spawnZombie();
   for (Avatar z : zombies) {
     z.drawMe();
   }
   moveZombies();
-  //players
+  /* Players */
   player.drawMe();
   player.keepMove();
+  /* Colliding btn player and zombies */
   for (Avatar z : zombies) {
     if (isColliding(player, z)) {
-      println("COLLISION!!");
+      timer=0;
     }
+  }
+  if (timer<50) {
+    image(imgCollision, width/2-35, height/2, width/8, height/8);
+  }
+  timer++;
+  /* Show Store */
+  if (showStore) {
+    image(imgStore, 0, 0, width, height);
   }
 }
 
@@ -72,6 +89,13 @@ void keyPressed() {
       player.startLeft();
     } else if (keyCode == RIGHT) {
       player.startRight();
+    } else if (keyCode == DOWN) {
+      showStore = true;
+      image(imgStore, 0, 0, width, height);
+      noLoop();
+    } else if (keyCode == UP) {
+      showStore = false;
+      loop();
     }
   }
 }

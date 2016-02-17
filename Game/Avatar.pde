@@ -3,15 +3,24 @@ public class Avatar {
   float xCor;
   float yCor;
   String dir;
+  color col;
 
   Avatar(int x, int y) {
     xCor = x;
     yCor = y;
+    col = #0000FF;
+    dir = "stop";
+  }
+
+  Avatar(int x, int y, color c) {
+    xCor = x;
+    yCor = y;
+    col = c;
     dir = "stop";
   }
 
   void drawMe() {
-    fill(#0000FF);
+    fill(col);
     stroke(#00FF00);
     ellipse(xCor*blockSize-blockSize/2, yCor*blockSize-blockSize/2, 50, 50);
   }
