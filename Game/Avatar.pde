@@ -21,7 +21,8 @@ public class Avatar {
 
   void drawMe() {
     fill(col);
-    stroke(#00FF00);
+    //stroke(#00FF00);
+    noStroke();
     ellipse(xCor*blockSize-blockSize/2, yCor*blockSize-blockSize/2, 50, 50);
   }
 
@@ -55,6 +56,11 @@ public class Avatar {
         xCor+=0.01;
       }
     }
+    image(imgCollision, xCor*blockSize, yCor*blockSize, 100, 50);
+  }
+
+  void showCollision() {
+    println(xCor);
   }
 }
 

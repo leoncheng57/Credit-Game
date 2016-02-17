@@ -6,7 +6,8 @@ Avatar player = new Avatar(2, 4);
 ArrayList<Avatar> zombies = new ArrayList<Avatar>();
 PImage imgCollision;
 PImage imgStore;
-int timer = 999;
+PImage imgSand;
+int timer = 0;
 boolean showStore;
 
 void setup() {
@@ -14,6 +15,7 @@ void setup() {
   background(0);
   imgCollision = loadImage("Collision.png");
   imgStore = loadImage("Store.png");
+  imgSand = loadImage("Sand.jpg");
 }
 
 void makeGrid() {
@@ -56,7 +58,8 @@ boolean isColliding(Avatar p, Avatar z) {
 }
 
 void draw() {
-  makeGrid();
+  image(imgSand, 0, 0, width, height);
+  //makeGrid();
   /* Zombies */
   spawnZombie();
   for (Avatar z : zombies) {
@@ -73,7 +76,8 @@ void draw() {
     }
   }
   if (timer<50) {
-    image(imgCollision, width/2-35, height/2, width/8, height/8);
+    image(imgCollision, width/2-40, height/2, 100, 50);
+    player.showCollision();
   }
   timer++;
   /* Show Store */
