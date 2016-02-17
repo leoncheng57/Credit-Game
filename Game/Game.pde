@@ -27,23 +27,52 @@ void spawnZombie() {
   if (rnd==0) {
     Avatar z = new Avatar(rx, ry);
     zombies.add(z);
-    println("wow");
   }
 }
 
-void moveZombies(){
-  for (Avatar z : zombies){
+void moveZombies() {
+  for (Avatar z : zombies) {
     z.yCor+=0.01;
-  } 
+  }
+}
+
+boolean isColliding(Avatar p, Avatar z) {
+  float px = p.xCor;
+  float py = p.yCor;
+  float zx = z.xCor;
+  float zy = z.yCor;
+  if (abs(px-zx)<0.25 && abs(py-zy)<0.25) {
+    return true;
+  }
+  return false;
 }
 
 void draw() {
   makeGrid();
-  player.drawMe();
+  //zombies
   spawnZombie();
   for (Avatar z : zombies) {
     z.drawMe();
   }
   moveZombies();
+  //players
+  player.drawMe();
+  player.keepMove();
+  for (Avatar z : zombies) {
+    if (isColliding(player, z)) {
+      println("COLLISION!!");
+    }
+  }
+}
+
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      player.startLeft();
+    } else if (keyCode == RIGHT) {
+      player.startRight();
+    }
+  }
 }
 
