@@ -4,18 +4,21 @@ public class Avatar {
   float yCor;
   String dir;
   color col;
+  PImage pic;
 
-  Avatar(int x, int y) {
-    xCor = x;
-    yCor = y;
+  Avatar(int x, int y, PImage p) {
+    xCor = x*blockSize;
+    yCor = y*blockSize;
     col = #0000FF;
+    pic = p;
     dir = "stop";
   }
 
-  Avatar(int x, int y, color c) {
+  Avatar(int x, int y, color c, PImage p) {
     xCor = x;
     yCor = y;
     col = c;
+    pic = p;
     dir = "stop";
   }
 
@@ -23,7 +26,8 @@ public class Avatar {
     fill(col);
     //stroke(#00FF00);
     noStroke();
-    ellipse(xCor*blockSize-blockSize/2, yCor*blockSize-blockSize/2, 50, 50);
+    ellipse(xCor-blockSize/2, yCor-blockSize/2, 50, 50);
+    //image(pic, xCor*blockSize, yCor*blockSize, 100, 100);
   }
 
   void startLeft() {
@@ -56,7 +60,7 @@ public class Avatar {
         xCor+=0.01;
       }
     }
-    image(imgCollision, xCor*blockSize, yCor*blockSize, 100, 50);
+    image(imgCollision, xCor, yCor, 100, 50);
   }
 
   void showCollision() {
