@@ -1,16 +1,16 @@
 //GLOBAL VARIABLES
+
 int blockSize = 200;
+Block[][] grid = new Block[3][4];
+Avatar player = new Avatar(2, 4);
 ArrayList<Avatar> zombies = new ArrayList<Avatar>();
 PImage imgCollision;
 PImage imgStore;
 PImage imgSand;
-PImage imgZombie;
 PImage imgPlayer;
+PImage imgZombie;
 int timer = 0;
 boolean showStore;
-
-Block[][] grid = new Block[3][4];
-Avatar player = new Avatar(2, 4, imgPlayer);
 
 void setup() {
   size(3*blockSize, 4*blockSize);
@@ -18,8 +18,8 @@ void setup() {
   imgCollision = loadImage("Collision.png");
   imgStore = loadImage("Store.png");
   imgSand = loadImage("Sand.jpg");
-  imgZombie = loadImage("Zombie.png");
   imgPlayer = loadImage("Player.png");
+  imgZombie = loadImage("Zombie.gif");
 }
 
 void makeGrid() {
@@ -38,7 +38,7 @@ void spawnZombie() {
   int ry = 1;
   if (rnd==0) {
     color c = #E30733;
-    Avatar z = new Avatar(rx, ry, c, imgZombie);
+    Avatar z = new Avatar(rx, ry, c);
     zombies.add(z);
   }
 }
@@ -67,18 +67,25 @@ void draw() {
   /* Zombies */
   spawnZombie();
   for (Avatar z : zombies) {
-    //z.drawMe();
-    image(imgZombie, z.xCor, z.yCor, 100, 100);
+    z.drawMe();
+    imageMode(CENTER);
+    image(imgZombie, z.xCor*blockSize-100, z.yCor*blockSize-100, 100, 100);
+    imageMode(CORNER);
   }
   moveZombies();
   /* Players */
   player.drawMe();
-  image(imgPlayer, player.xCor, player.yCor, 100, 100);  
+  imageMode(CENTER);
+  image(imgPlayer, player.xCor*blockSize-100, player.yCor*blockSize-100, 100, 100);
+  imageMode(CORNER);
   player.keepMove();
   /* Colliding btn player and zombies */
   for (Avatar z : zombies) {
     if (isColliding(player, z)) {
       timer=0;
+       for (Avatar z2 : zombies) {
+         z2.yCor = 0;
+       }
     }
   }
   if (timer<50) {
